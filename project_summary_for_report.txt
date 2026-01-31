@@ -1,0 +1,80 @@
+RÉSUMÉ DU PROJET WEB SGTM (Système de Gestion de Location d'Engins)
+
+1. OBJECTIF DU PROJET
+   Transformation d'une application desktop existante (Python/Tkinter) en une application web moderne complète.
+   Le but est de gérer la location d'engins de chantier, les chantiers, la maintenance et le planning via un navigateur.
+
+2. ARCHITECTURE TECHNIQUE
+   - Backend : Node.js avec le framework Express.js.
+   - Base de données : MongoDB (NoSQL) avec Mongoose pour la modélisation des données.
+   - Frontend : HTML5, Vanilla JavaScript (ES6+), Tailwind CSS pour le design (Responsive & Dark Mode).
+   - Authentification : JSON Web Tokens (JWT) pour les sessions stateless.
+   - Sécurité : Hachage des mots de passe avec bcryptjs, protection contre le Brute-Force (express-rate-limit).
+
+3. FONCTIONNALITÉS DÉVELOPPÉES
+
+   A. Authentification & Gestion Utilisateurs
+      - Inscription et Connexion sécurisées.
+      - Gestion des rôles (RBAC) : 
+        * Admin : Accès total, gestion utilisateurs, backup.
+        * Gestionnaire : Lecture/Écriture sur les opérations métier.
+        * Observateur : Lecture seule.
+      - Fonctionnalité "Mot de passe oublié" : Génération de token temporaire, simulation d'envoi d'email, et page de réinitialisation.
+      - Sécurité avancée : Renouvellement de la clé secrète JWT au redémarrage du serveur pour invalider les anciennes sessions.
+
+   B. Gestion des Engins (Parc Matériel)
+      - CRUD complet (Créer, Lire, Mettre à jour, Supprimer).
+      - Données gérées : Code unique, Famille, Marque, Modèle, Numéro de série, Coût journalier.
+      - Gestion des statuts : Disponible, Loué, Maintenance, En panne.
+      - Alertes : Suivi des intervalles de maintenance préventive.
+
+   C. Gestion des Chantiers & Géolocalisation
+      - CRUD des chantiers avec statut (Actif/Inactif).
+      - Intégration API Nominatim (OpenStreetMap) : Autocomplétion des adresses lors de la saisie.
+      - Cartographie : Visualisation interactive des chantiers sur une carte (Leaflet.js) avec marqueurs colorés selon le statut.
+
+   D. Gestion des Locations (Cœur du métier)
+      - Création de locations avec sélection d'engin et de chantier.
+      - Algorithme de disponibilité : Vérification stricte des chevauchements de dates pour éviter les doubles locations.
+      - Automatisation : 
+        * Passage automatique de l'engin à "Loué" lors de la création.
+        * Calcul automatique du coût total (Durée x Coût jour).
+      - Workflow : Terminer ou Annuler une location libère automatiquement l'engin.
+
+   E. Maintenance & Pannes
+      - Module Maintenance : Historique des interventions, coûts, et techniciens.
+      - Module Pannes : Signalement avec niveau de gravité (Faible, Moyenne, Critique).
+      - Impact métier : Une panne critique bloque l'engin (Statut "En panne") jusqu'à résolution.
+      - Statistiques financières : Suivi des coûts de maintenance par famille d'engin.
+
+   F. Dashboard & Pilotage
+      - Indicateurs en temps réel (KPI) : Parc total, Engins loués, Revenus générés, Rentabilité nette.
+      - Graphiques : Répartition visuelle des statuts (Chart.js).
+      - Centre de Notifications & Alertes :
+        * Retours de location prévus demain.
+        * Maintenances préventives dépassées.
+        * Engins en maintenance depuis trop longtemps (> 7 jours).
+        * Suggestions d'utilisation pour les engins inactifs.
+
+   G. Outils d'Administration
+      - Logs système : Traçabilité complète des actions (Qui a fait quoi, quand).
+      - Sauvegarde/Restauration : Export de la base de données en JSON et restauration via upload.
+      - Seed Data : Script pour générer des données de test et peupler l'application instantanément.
+
+   H. Expérience Utilisateur (UI/UX)
+      - Mode Sombre (Dark Mode) complet et persistant.
+      - Système de "Toasts" : Notifications visuelles temporaires pour confirmer les actions.
+      - Interface adaptative (Sidebar, Modales, Tableaux responsives).
+
+4. STRUCTURE DU CODE
+   - index.js : Serveur API, configuration MongoDB, définition des Schémas (User, Engin, Location, etc.), Routes API RESTful.
+   - app.js : Logique client, appels fetch(), gestion du DOM, logique des formulaires et des cartes.
+   - Pages HTML : Découpage par fonctionnalité (index, login, register, forgot-password, reset-password, etc.).
+
+5. POINTS FORTS TECHNIQUES
+   - Architecture REST propre.
+   - Pas de rechargement de page inutile (Single Page Application feel).
+   - Code modulaire et commenté.
+   - Gestion des erreurs robuste (Backend & Frontend).
+
+Ce projet couvre l'ensemble des besoins d'une gestion locative moderne avec une attention particulière portée à la cohérence des données et à l'expérience utilisateur.

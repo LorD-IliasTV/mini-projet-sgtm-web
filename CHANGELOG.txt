@@ -1,0 +1,121 @@
+HISTORIQUE DES MODIFICATIONS - PROJET SGTM WEB
+==============================================
+
+[INITIALISATION]
+- Création de l'architecture Backend (Node.js, Express, MongoDB).
+- Création de l'architecture Frontend (HTML, Tailwind CSS, Vanilla JS).
+- Connexion à la base de données MongoDB.
+
+[FONCTIONNALITÉS DE BASE]
+- CRUD Engins : Liste, Ajout, Suppression.
+- CRUD Chantiers : Liste, Ajout, Archivage (Statut Inactif).
+- CRUD Locations : Liste, Création, Changement de statut (Terminée/Annulée).
+- Dashboard : Affichage des statistiques en temps réel.
+
+[AUTHENTIFICATION & SÉCURITÉ]
+- Ajout du modèle Utilisateur (username, password, role).
+- Création des pages Login et Inscription.
+- Gestion des sessions via Token (localStorage).
+- Gestion des rôles :
+  * Admin : Accès total + Gestion utilisateurs + Seed.
+  * Gestionnaire : Accès lecture/écriture (sauf admin).
+  * Observateur : Lecture seule.
+- Protection des routes frontend et masquage des boutons selon le rôle.
+- Ajout du bouton de déconnexion.
+
+[LOGIQUE MÉTIER (ALIGNEMENT DESKTOP)]
+- Mise à jour du modèle Engin :
+  * Ajout : code_engin, famille, categorie, marque, modele, numero_serie.
+  * Suppression : champs génériques (nom, type).
+- Mise à jour du modèle Chantier (Statut Actif/Inactif).
+- Logique de disponibilité stricte :
+  * Vérification des chevauchements de dates lors de la création d'une location.
+  * Mise à jour automatique du statut de l'engin (Disponible <-> Loué).
+
+[MODULE MAINTENANCE]
+- Création du modèle Maintenance (date, type, technicien, notes).
+- Création de la page de suivi Maintenance.
+- Logique : Ajouter une maintenance passe l'engin en statut "Maintenance".
+
+[PLANNING]
+- Intégration de la librairie FullCalendar.
+- Visualisation des locations sur un calendrier mensuel.
+- Code couleur selon le statut de la location.
+
+[OUTILS & TESTS]
+- Création de la route API `/api/seed` pour peupler la base de données.
+- Ajout du bouton "Générer Données Test" sur le Dashboard (Admin seulement).
+
+[CORRECTIONS & AJUSTEMENTS RÉCENTS]
+- Ajout du champ "Date de fin" dans le formulaire et le tableau des locations.
+- Correction du script de génération de données (Seed) pour inclure l'historique de maintenance.
+- Correction de l'affichage des engins en maintenance dans le tableau dédié.
+
+[VALIDATION]
+- Backend : Rejet des requêtes si Date Fin <= Date Début.
+- Frontend : Alerte utilisateur avant envoi et affichage des erreurs API (ex: conflits dates).
+
+[NIVEAU 1 - AMÉLIORATIONS PRO]
+- Logs : Création du système de journalisation des actions (Ajout, Modif, Suppr).
+- Logs : Nouvelle page "Logs" pour les administrateurs.
+- Recherche : Filtres avancés pour les engins (Famille, Marque).
+- Export : Boutons PDF et Excel sur les listes Engins et Locations.
+- Profil : Page de profil avec changement de mot de passe.
+
+[NIVEAU 2 - GESTION AVANCÉE]
+- Finance : Ajout du coût journalier par engin.
+- Finance : Calcul automatique du coût total des locations.
+- Finance : Suivi des coûts de maintenance.
+- Dashboard : Affichage du CA, des coûts et de la rentabilité nette.
+- Alertes : Notifications automatiques (Retours demain, Maintenance longue, Engins inutilisés).
+
+[MODIFICATION]
+- Engins : Ajout du bouton "Modifier" et adaptation du formulaire (Ajout/Update).
+- Chantiers : Ajout du bouton "Modifier" et adaptation du formulaire.
+
+[NIVEAU 3 - GESTION TECHNIQUE]
+- Pannes : Nouveau module de gestion des pannes (Signalement, Gravité, Résolution).
+- Engins : Ajout de photo et intervalle de maintenance.
+- Alertes : Notification si maintenance préventive dépassée.
+
+[NIVEAU 4 - WEB MODERNE]
+- UI : Mode Sombre (Dark Mode) complet sur toutes les pages.
+- UX : Système de notifications en temps réel (Toasts) pour les événements importants.
+
+[NIVEAU 5 - SÉCURITÉ & ADMIN]
+- Sécurité : Hachage des mots de passe (bcrypt).
+- Sécurité : Authentification via JWT (JSON Web Tokens).
+- Sécurité : Protection contre les attaques par force brute (Rate Limiting).
+- Admin : Système de Sauvegarde et Restauration de la base de données (JSON).
+
+[CARTE INTERACTIVE]
+- Chantiers : Ajout de la bibliothèque Leaflet.
+- Chantiers : Visualisation des chantiers sur une carte interactive.
+- Chantiers : Ajout des champs Latitude/Longitude dans le formulaire.
+
+[DESIGN PRO & UI/UX]
+- Refonte complète de l'interface (Template Admin Moderne).
+- Remplacement de la Navbar par une Sidebar latérale sombre.
+- Ajout d'un Header épuré avec profil et contrôles.
+- Adoption de la police 'Inter' et palette de couleurs Slate.
+- Modernisation des tableaux (Data Grid) et des modales (Backdrop Blur).
+- Harmonisation du design sur toutes les pages.
+
+[GÉOLOCALISATION INTELLIGENTE]
+- Chantiers : Ajout de l'autocomplétion d'adresse via l'API Nominatim (OpenStreetMap).
+- Chantiers : Remplissage automatique des coordonnées Latitude/Longitude.
+
+[FILTRAGE & RECHERCHE]
+- Ajout de barres de recherche et de filtres sur toutes les pages (Chantiers, Locations, Maintenance, Pannes, Utilisateurs).
+- Filtrage dynamique côté client pour une réactivité immédiate.
+- Correction : Activation des écouteurs d'événements pour le filtrage des Locations.
+- Correction : Ajout de l'option "En panne" dans les filtres de la page Engins.
+
+==============================================
+À FAIRE / PROCHAINES ÉTAPES SUGGÉRÉES :
+- [x] Validation : Date de fin > Date de début.
+- [x] Export PDF des listes.
+- [ ] Recherche avancée sur les chantiers.
+- [x] Page de profil utilisateur (changement mot de passe).
+- [ ] Déploiement serveur.
+==============================================

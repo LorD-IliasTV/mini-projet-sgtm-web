@@ -1,0 +1,418 @@
+Je possède déjà une application desktop en Python (tkinter + SQLite) appelée :
+
+Système de Gestion de Location d’Engins – SGTM
+
+Elle permet de gérer :
+
+les engins
+
+les chantiers
+
+les locations
+
+un planning calendrier
+
+Je veux maintenant recréer exactement la même logique en application web, mais avec une architecture moderne (frontend + backend + base de données).
+
+🎯 OBJECTIF
+
+Transformer une application desktop de gestion de location d’engins de chantier en application web complète, tout en gardant :
+
+la même structure des données
+
+les mêmes règles métier
+
+les mêmes fonctionnalités
+
+🧱 1. STRUCTURE DES DONNÉES À RESPECTER
+🚜 ENGINS
+
+id
+
+code_engin (unique)
+
+famille
+
+categorie
+
+marque
+
+modele
+
+numero_serie (unique)
+
+statut (Disponible, Loué, Maintenance)
+
+date_creation
+
+🏗️ CHANTIERS
+
+id
+
+chef_projet
+
+localisation
+
+statut (Actif/Inactif)
+
+date_creation
+
+🚚 LOCATIONS
+
+id
+
+engin_id (clé étrangère)
+
+chantier_id (clé étrangère)
+
+date_debut
+
+date_fin
+
+date_location
+
+statut (En cours, Terminée, Annulée)
+
+notes
+
+Relations :
+
+1 engin → plusieurs locations
+
+1 chantier → plusieurs locations
+
+⚙️ 2. LOGIQUE MÉTIER OBLIGATOIRE
+
+Respecter ces règles :
+
+Un engin ne peut pas être loué s’il est déjà en location sur la même période
+
+Vérifier automatiquement la disponibilité
+
+Les codes engins et numéros de série doivent être uniques
+
+Lorsqu’une location est créée → statut engin = "Loué"
+
+Quand location terminée → statut engin = "Disponible"
+
+🌐 3. VERSION WEB À CRÉER
+
+Propose une architecture :
+
+Backend :
+
+API REST
+
+Gestion CRUD pour :
+
+engins
+
+chantiers
+
+locations
+
+Frontend :
+
+Interface type dashboard admin avec sidebar :
+
+Dashboard
+
+Engins
+
+Chantiers
+
+Locations
+
+Planning
+
+📅 4. PLANNING (TRÈS IMPORTANT)
+
+Reproduire le planning calendrier du desktop :
+
+Vue calendrier mensuelle
+
+Jours avec locations surlignés
+
+Cliquer sur une date → voir les locations de ce jour
+
+Affichage :
+
+engin
+
+chantier
+
+statut
+
+👤 5. FONCTIONS WEB SUPPLÉMENTAIRES
+
+Ajouter :
+
+Système de connexion utilisateur
+
+Rôles :
+
+Admin
+
+Gestionnaire
+
+Observateur
+
+💻 6. CE QUE JE VEUX QUE TU GÉNÈRES
+
+Structure complète du projet
+
+Modèle de base de données
+
+Routes API (GET, POST, PUT, DELETE)
+
+Pages frontend nécessaires
+
+Logique de vérification de disponibilité
+
+Code simple et commenté (niveau étudiant)
+
+🎨 7. STYLE INTERFACE
+
+Interface moderne
+
+Tableaux pour les listes
+
+Formulaires modaux
+
+Couleurs professionnelles (bleu/gris)
+
+Icônes et boutons d’action
+
+⚠️ CONTRAINTE
+
+C’est un mini-projet étudiant, donc :
+
+Pas de concepts trop avancés
+
+Code clair
+
+Explications en commentaires
+
+
+
+
+
+
+
+
+
+
+🧠 🔥 NIVEAU 1 — AMÉLIORATIONS PRO MAIS FACILES
+🔎 Recherche & Filtres Avancés
+
+Recherche multi-critères engins :
+
+par marque
+
+par famille
+
+par statut
+
+par chantier actuel
+
+Filtres combinables
+
+📤 Export de données
+
+Export PDF :
+
+Liste des engins
+
+Liste des locations
+
+Rapport maintenance
+
+Export Excel (.xlsx)
+
+👤 Profil utilisateur
+
+Page profil
+
+Modifier mot de passe
+
+Voir son rôle
+
+Voir historique d’activité (actions faites)
+
+📝 Journal d’Activité (LOGS)
+
+Créer table logs :
+
+utilisateur
+
+action (ajout location, suppression engin…)
+
+date
+
+description
+
+➡️ Le prof adore ça.
+
+🏗️ 🔥 NIVEAU 2 — FONCTIONNALITÉS MÉTIER AVANCÉES
+⏰ Alertes automatiques
+
+Location qui finit demain → notification
+
+Engin en maintenance trop longtemps → alerte
+
+Engin non utilisé depuis longtemps → suggestion
+
+💰 Gestion des coûts
+
+Ajouter :
+
+coût de location par jour pour chaque engin
+
+calcul automatique coût total location
+
+coût maintenance
+
+Dashboard :
+
+revenu total généré
+
+coût maintenance
+
+engin le plus rentable
+
+📊 Statistiques avancées
+
+Graphiques :
+
+Engins les plus loués
+
+Taux d’utilisation (% temps loué)
+
+Répartition par famille d’engins
+
+🧾 Facturation simple
+
+Quand une location est terminée :
+
+générer une “facture” :
+
+engin
+
+chantier
+
+dates
+
+coût
+
+Export PDF facture
+
+🚨 🔧 NIVEAU 3 — GESTION TECHNIQUE DES ENGINS
+🛠️ Dossier technique engin
+
+Pour chaque engin :
+
+photo
+
+documents (PDF carte grise, assurance)
+
+historique complet :
+
+locations
+
+maintenances
+
+pannes
+
+🚨 Module Pannes
+
+Table pannes :
+
+description
+
+gravité (faible/moyenne/critique)
+
+date
+
+statut
+
+Quand panne critique → engin bloqué (pas louable)
+
+📅 Plan de maintenance préventive
+
+Chaque engin a un intervalle (ex: 6 mois)
+
+Si dépassé → alerte automatique
+
+🌍 🔥 NIVEAU 4 — WEB MODERNE (le prof va halluciner)
+🔔 Notifications en temps réel
+
+Quand :
+
+location créée
+
+panne signalée
+
+maintenance ajoutée
+
+🌙 Mode sombre
+
+Switch Dark/Light mode
+
+📱 Responsive mobile
+
+Version adaptée téléphone
+
+🧭 Carte des chantiers
+
+Afficher chantiers sur carte (Google Maps ou Leaflet)
+
+🧠 🔒 NIVEAU 5 — SÉCURITÉ & PRO
+🔐 Sécurité
+
+Hash mot de passe (bcrypt)
+
+Expiration token
+
+Protection brute force login
+
+💾 Sauvegarde base de données
+
+Bouton admin :
+
+Export base
+
+Import backup
+
+📦 Système d’archives
+
+Locations anciennes → archive
+
+Chantiers terminés → archive
+
+🎓 BONUS QUI TUE TOUT
+🤖 Prédiction IA simple
+
+Statistique :
+
+“Cet engin aura besoin de maintenance bientôt selon son utilisation”
+
+(Même simple règle = ça impressionne)
+
+🧠 Système de recommandations
+
+“Cet engin est libre et rarement utilisé → proposer pour nouveau chantier”
+
+🛠️ Modules avancés
+- "Crée un modèle Mongoose pour le module Pannes avec champs {engin, gravité, description, date_signalement, date_resolution}."
+- "Ajoute une route API qui renvoie la liste des engins dont la maintenance préventive est dépassée."
+- "Écris une fonction qui calcule automatiquement le coût total d’une location en fonction du coût journalier de l’engin."
+
+🌍 Carte interactive
+- "Intègre Leaflet pour afficher les chantiers avec des marqueurs personnalisés (couleur selon statut Actif/Inactif)."
+- "Ajoute une popup sur chaque chantier affichant {Nom, Statut, Nombre d’engins affectés}."
+- "Écris une fonction qui calcule la distance entre deux chantiers via leurs coordonnées GPS."
+
+🎨 UI/UX moderne
+- "Génère un composant Tailwind CSS pour une sidebar sombre avec icônes et transitions."
+- "Ajoute un système de toasts en temps réel avec Tailwind + Vanilla JS pour afficher les alertes importantes."
+- "Écris le code pour activer/désactiver le mode sombre avec persistance dans localStorage."

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGTM Web - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { darkMode: 'class' }</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Inter', sans-serif; }</style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 font-sans text-slate-800 dark:text-slate-100 transition-colors duration-200 overflow-hidden">
+
+    <div class="flex h-screen">
+        <!-- SIDEBAR -->
+        <aside class="w-64 bg-slate-900 text-white flex flex-col shadow-2xl z-20 hidden md:flex">
+            <div class="h-16 flex items-center justify-center border-b border-slate-800 bg-slate-950">
+                <a href="index.html" class="text-xl font-bold tracking-wider flex items-center gap-2">
+                    <i class="fas fa-hard-hat text-blue-500"></i> SGTM <span class="font-light opacity-70">Gestion des engins</span>
+                </a>
+            </div>
+            
+            <nav class="flex-1 overflow-y-auto py-6">
+                <ul class="space-y-1 px-3">
+                    <li><a href="index.html" class="flex items-center px-4 py-3 bg-blue-600 text-white shadow-lg shadow-blue-900/50 rounded-lg transition-all"><i class="fas fa-tachometer-alt w-6"></i> Dashboard</a></li>
+                    
+                    <div class="pt-4 pb-2 px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Gestion</div>
+                    <li><a href="engins.html" class="flex items-center px-4 py-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-lg transition-all"><i class="fas fa-truck-monster w-6"></i> Engins</a></li>
+                    <li><a href="chantiers.html" class="flex items-center px-4 py-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-lg transition-all"><i class="fas fa-building w-6"></i> Chantiers</a></li>
+                    <li><a href="locations.html" class="flex items-center px-4 py-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-lg transition-all"><i class="fas fa-file-contract w-6"></i> Locations</a></li>
+                    
+                    <div class="pt-4 pb-2 px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Technique</div>
+                    <li><a href="maintenance.html" class="flex items-center px-4 py-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-lg transition-all"><i class="fas fa-tools w-6"></i> Maintenance</a></li>
+                    <li><a href="pannes.html" class="flex items-center px-4 py-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-lg transition-all"><i class="fas fa-exclamation-triangle w-6"></i> Pannes</a></li>
+                    <li><a href="planning.html" class="flex items-center px-4 py-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-lg transition-all"><i class="fas fa-calendar-alt w-6"></i> Planning</a></li>
+                    
+                    <div class="pt-4 pb-2 px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider admin-only">Administration</div>
+                    <li class="admin-only"><a href="utilisateurs.html" class="flex items-center px-4 py-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-lg transition-all"><i class="fas fa-users w-6"></i> Utilisateurs</a></li>
+                </ul>
+            </nav>
+
+            <div class="p-4 border-t border-slate-800 bg-slate-950">
+                <a href="profil.html" class="flex items-center gap-3 hover:opacity-80 transition">
+                    <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center font-bold text-sm">U</div>
+                    <div class="text-sm">
+                        <p class="font-medium">Mon Profil</p>
+                        <p class="text-xs text-slate-500">Gérer mon compte</p>
+                    </div>
+                </a>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <div class="flex-1 flex flex-col h-screen overflow-hidden relative">
+            <!-- TOP HEADER -->
+            <header class="h-16 bg-white dark:bg-slate-800 shadow-sm flex items-center justify-between px-6 z-10">
+                <div class="flex items-center gap-4">
+                    <h2 class="text-xl font-bold text-slate-800 dark:text-white">📊 Tableau de Bord</h2>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleDarkMode()" class="p-2 rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button onclick="logout()" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-lg transition">
+                        <i class="fas fa-sign-out-alt"></i> Déconnexion
+                    </button>
+                </div>
+            </header>
+
+            <!-- SCROLLABLE CONTENT -->
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-slate-50 dark:bg-slate-900 p-6">
+                
+                <div class="flex justify-end gap-2 mb-6">
+                    <button onclick="backupData()" class="admin-only bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow transition flex items-center gap-2">
+                        <i class="fas fa-download"></i> Sauvegarder BD
+                    </button>
+                    <button onclick="triggerRestore()" class="admin-only bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-lg shadow transition flex items-center gap-2">
+                        <i class="fas fa-upload"></i> Restaurer BD
+                    </button>
+                    <input type="file" id="restore-input" class="hidden" accept=".json">
+                    <button onclick="seedData()" class="admin-only bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg shadow transition flex items-center gap-2">
+                        <i class="fas fa-database"></i> Générer Données Test
+                    </button>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border-l-4 border-blue-500 flex items-center justify-between">
+                        <div><p class="text-sm text-slate-500 uppercase font-semibold">Total Engins</p><h3 class="text-2xl font-bold text-slate-800 dark:text-white" id="stat-total">...</h3></div>
+                        <div class="p-3 bg-blue-50 rounded-full text-blue-600"><i class="fas fa-truck-monster fa-lg"></i></div>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border-l-4 border-green-500 flex items-center justify-between">
+                        <div><p class="text-sm text-slate-500 uppercase font-semibold">Disponibles</p><h3 class="text-2xl font-bold text-slate-800 dark:text-white" id="stat-dispo">...</h3></div>
+                        <div class="p-3 bg-green-50 rounded-full text-green-600"><i class="fas fa-check fa-lg"></i></div>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border-l-4 border-indigo-500 flex items-center justify-between">
+                        <div><p class="text-sm text-slate-500 uppercase font-semibold">Loués</p><h3 class="text-2xl font-bold text-slate-800 dark:text-white" id="stat-loue">...</h3></div>
+                        <div class="p-3 bg-indigo-50 rounded-full text-indigo-600"><i class="fas fa-truck-loading fa-lg"></i></div>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border-l-4 border-yellow-500 flex items-center justify-between">
+                        <div><p class="text-sm text-slate-500 uppercase font-semibold">Maintenance</p><h3 class="text-2xl font-bold text-slate-800 dark:text-white" id="stat-maint">...</h3></div>
+                        <div class="p-3 bg-yellow-50 rounded-full text-yellow-600"><i class="fas fa-tools fa-lg"></i></div>
+                    </div>
+                </div>
+
+                <!-- Chart Section -->
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 mb-8">
+                    <h2 class="text-lg font-bold text-slate-800 dark:text-white mb-4">📈 Répartition des Engins</h2>
+                    <div class="h-64"><canvas id="enginStatusChart"></canvas></div>
+                </div>
+
+                <!-- Financial & Alerts -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <!-- Finance -->
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+                        <h2 class="text-lg font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2"><i class="fas fa-coins text-yellow-500"></i> Finance</h2>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-green-50 dark:bg-green-900/30 p-4 rounded-lg border border-green-100 dark:border-green-800">
+                                <p class="text-green-600 dark:text-green-400 text-xs font-bold uppercase">Chiffre d'Affaires</p>
+                                <p class="text-2xl font-bold text-green-700 dark:text-green-300" id="stat-revenue">0 €</p>
+                            </div>
+                            <div class="bg-red-50 dark:bg-red-900/30 p-4 rounded-lg border border-red-100 dark:border-red-800">
+                                <p class="text-red-600 dark:text-red-400 text-xs font-bold uppercase">Coût Maintenance</p>
+                                <p class="text-2xl font-bold text-red-700 dark:text-red-300" id="stat-cost">0 €</p>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <h3 class="font-semibold text-slate-700 dark:text-slate-300 mb-3 text-sm">Détail Maintenance par Famille</h3>
+                            <ul id="stat-maint-details" class="text-sm space-y-2 text-slate-600 dark:text-slate-400"></ul>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-100 dark:border-slate-700 text-sm text-slate-500 dark:text-slate-400 flex justify-between items-center">
+                            <span>Rentabilité nette estimée :</span>
+                            <span id="stat-net" class="font-bold text-lg text-slate-800 dark:text-white">...</span>
+                        </div>
+                    </div>
+
+                    <!-- Alerts -->
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+                        <h2 class="text-lg font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2"><i class="fas fa-bell text-blue-500"></i> Alertes & Notifications</h2>
+                        <div id="alerts-container" class="space-y-3 max-h-80 overflow-y-auto pr-2">
+                            <!-- Rempli par JS -->
+                            <p class="text-slate-400 italic text-sm">Aucune alerte pour le moment.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity Logs -->
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+                    <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-700">
+                        <h2 class="text-lg font-bold text-slate-800 dark:text-white">📜 Dernières actions système</h2>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full leading-normal">
+                            <thead>
+                                <tr>
+                                    <th class="px-6 py-3 bg-slate-50 dark:bg-slate-700/50 text-left text-xs font-bold text-slate-500 dark:text-slate-300 uppercase tracking-wider">Date</th>
+                                    <th class="px-6 py-3 bg-slate-50 dark:bg-slate-700/50 text-left text-xs font-bold text-slate-500 dark:text-slate-300 uppercase tracking-wider">Utilisateur</th>
+                                    <th class="px-6 py-3 bg-slate-50 dark:bg-slate-700/50 text-left text-xs font-bold text-slate-500 dark:text-slate-300 uppercase tracking-wider">Action</th>
+                                    <th class="px-6 py-3 bg-slate-50 dark:bg-slate-700/50 text-left text-xs font-bold text-slate-500 dark:text-slate-300 uppercase tracking-wider">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dashboard-logs-body" class="divide-y divide-slate-100 dark:divide-slate-700">
+                                <!-- Rempli par JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
